@@ -15,12 +15,18 @@ class RegisterFileTest extends AnyFlatSpec with ChiselScalatestTester {
     test(new RegisterFile).withAnnotations(TestAnnotations.annos) { c =>
       timescope {
         c.io.write_enable.poke(true.B)
-        c.io.write_address.poke(1.U)
+        c.io.write_address.poke(1.U);
         c.io.write_data.poke(0xdeadbeefL.U)
         c.clock.step()
+
       }
+
       c.io.read_address1.poke(1.U)
       c.io.read_data1.expect(0xdeadbeefL.U)
+
+      c.clock.step()
+      c.clock.step()
+      c.clock.step()
     }
   }
 
@@ -44,7 +50,7 @@ class RegisterFileTest extends AnyFlatSpec with ChiselScalatestTester {
         c.io.read_data1.expect(0.U)
         c.io.write_enable.poke(true.B)
         c.io.write_address.poke(2.U)
-        c.io.write_data.poke(0xdeadbeefL.U)
+        c.io.write_data.poke(0xdeadbeefL.U) 
         c.clock.step()
         c.io.read_address1.poke(2.U)
         c.io.read_data1.expect(0xdeadbeefL.U)
